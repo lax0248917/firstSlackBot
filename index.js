@@ -2,7 +2,7 @@ const SlackBot = require('slackbots');
 const axios = require('axios');
 
 const bot = new SlackBot({
-	token : 'xoxb-862576157620-898260284484-4leNIOYhDgcFLzA6dnHlbAkr',
+	token : 'xoxb-862576157620-898260284484-yFJRtogWOrJyZl6ib9mzNPcQ',
 	name  : 'JokeBot'
 });
 
@@ -30,6 +30,10 @@ bot.on('message', (data) => {
 function handleMessage (message) {
 	if (message.includes(' chucknorris')) {
 		chuckJoke();
+	} else if (message.includes(' yomomma')) {
+		yoMommaJoke();
+	} else if (message.includes(' trivia')) {
+		triviaQuestion();
 	}
 }
 
@@ -44,5 +48,40 @@ function chuckJoke () {
 		};
 
 		bot.postMessageToChannel('general', `Chuck Norris: ${joke}`, params);
+	});
+}
+
+// Tell a Yo Momma Joke
+
+function yoMommaJoke () {
+	axios.get('http://api.yomomma.info').then((res) => {
+		const joke = res.data.joke;
+
+		const params = {
+			icon_emoji : ':laughing:'
+		};
+
+		bot.postMessageToChannel('general', `Yo Momma: ${joke}`, params);
+	});
+}
+
+// Tell a Trivia Question
+
+function triviaQuestion () {
+	axios.get('http://trivia.propernerd.com/api/questions?limit=1&random=true').then((res) => {
+		const question = res.data[0].question;
+
+		const answer = res.data[0].answer;
+
+		const params = {
+			icon_emoji : ':bulb:'
+		};
+
+		bot.postMessageToChannel('general', `Trivia: ${question}`, params);
+
+		// Provides Answer on a 5 second delay
+		setTimeout(function () {
+			bot.postMessageToChannel('general', `Answer: ${answer}`, params);
+		}, 5000);
 	});
 }
