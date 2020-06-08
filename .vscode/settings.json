@@ -1,4 +1,0 @@
-{
-  "appService.defaultWebAppToDeploy": "/subscriptions/348a70f4-1ff9-4428-84be-d5c5f473abd6/resourceGroups/Training/providers/Microsoft.Web/sites/jokebot",
-  "appService.deploySubpath": "."
-}
